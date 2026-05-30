@@ -16,8 +16,8 @@ export default function Footer() {
           <div className="space-y-4">
            <Link
                     href={'/'}
-                    className="flex items-center gap-2 ">
-                    <div className="relative w-8 lg:w-14 h-8 lg:h-14 ">
+                    className="z-0   flex items-center gap-2 ">
+                    <div className="relative  w-8 lg:w-14 h-8 lg:h-14 ">
                         <Image
                             src="/images/headerLogo.jpg"
                             alt="logo"

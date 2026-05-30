@@ -8,7 +8,7 @@ import {postsList} from '@/data/posts'
  const  HomePage =  async()=> {
 
     const posts = await postsList()
-    console.log(posts);
+  
     
 
   return (

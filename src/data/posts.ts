@@ -1,4 +1,7 @@
-export interface Tpost {
+import axios from "axios";
+import { number } from "framer-motion";
+
+export  interface Tpost {
   id: number;
   title: string;
   body: string;
@@ -6,27 +9,38 @@ export interface Tpost {
 }
 
 export const postsList = async (): Promise<Tpost[]> => {
-  const controller = new AbortController();
-
-  const timeout = setTimeout(() => {
-    controller.abort();
-  }, 8000);
 
   try {
-    const res = await fetch(
-      "https://dummyjson.com/posts",
+
+    const res = await axios.get(
+      "http://localhost:3000/api/posts",
       {
-        cache: "no-store",
-        signal: controller.signal,
+        timeout: 8000,
       }
     );
 
-    clearTimeout(timeout);
-    const postsRES = await res.json();
+    return res.data.posts;
 
-    return postsRES.posts;
   } catch (err) {
+
     console.log("Fetch failed:", err);
+
     throw new Error(`Fetch failed: ${err}`);
   }
 };
+
+
+export const getPostById = async(id:string)=>{
+
+    console.log('id ==========>> '+id);
+
+   const post =await axios.get(`https://dummyjson.com/posts/${id}`);
+  
+   
+    return post.data
+
+
+    // console.log(post );
+}
+
+
