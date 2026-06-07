@@ -19,7 +19,8 @@ export const postsList = async (): Promise<Tpost[]> => {
       }
     );
 
-    return res.data.posts;
+
+    return res.data.Data;
 
   } catch (err) {
 
@@ -32,11 +33,13 @@ export const postsList = async (): Promise<Tpost[]> => {
 
 export const getPostById = async(id:string)=>{
 
-    console.log('id ==========>> '+id);
+    // console.log('id ==========>> '+id);
 
-   const post =await axios.get(`https://dummyjson.com/posts/${id}`);
+   const post =await axios.get(`http://localhost:3000/api/posts/${id}`);
   
-   
+  //  console.log(' ====================================')
+    // console.log(post.data.post );
+    
     return post.data
 
 

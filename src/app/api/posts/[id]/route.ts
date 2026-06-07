@@ -1,16 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { posts } from "@/app/utils/posts";
 import { Tpost } from "@/data/posts";
+import { prisma } from "@/app/utils/lib/prisma";
+import { IUpdatePostDTO } from "@/app/utils/lib/dto";
+import { errorHandler } from "@/app/utils/lib/api-handler";
 
-export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const GET =errorHandler( async (req: NextRequest, { params }: { params: { id: string } }) => {
     const p = await params
     const id = await Number(p.id);
 
 
 
-    const post = posts.find((item) => {
-        return item.id === id;
-    });
+    const post = await prisma.post.findUnique({
+        where: {
+            id
+        }
+    })
 
     if (!post) {
         return NextResponse.json(
@@ -25,19 +30,30 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
         post,
 
     });
-};
+});
 
 
 
-export const PUT = async (
+export const PUT =errorHandler( async (
     req: NextRequest,
     { params }: { params: { id: string } }
 ) => {
 
     const p = await params
     const id = await Number(p.id);
+    const body = await req.json() as IUpdatePostDTO ;
 
-    const post = posts.find((item) => item.id === id);
+
+    const post = await prisma.post.update({
+        where:{
+            id
+        },
+        data:{
+            title:body.title,
+            body:body.body
+        }
+    })
+
 
     if (!post) {
         return NextResponse.json(
@@ -46,25 +62,25 @@ export const PUT = async (
         );
     }
 
-    const body = await req.json();
-
-    post.title = body.title || post.title;
-    post.description = body.description || post.description;
 
     return NextResponse.json({
         msg: "UPDATED",
         post,
     });
-};
+});
 
 
-export const DELETE = async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const DELETE =errorHandler( async (req: NextRequest, { params }: { params: { id: string } }) => {
     const p = await params
     const id = await Number(p.id);
 
-    posts.filter((item) => item.id !== id);
+  const deletePost =   await prisma.post.delete({
+        where:{
+            id
+        }
+    })
     return NextResponse.json({
         msg: "DELETE",
-
+        deletePost
     });
-};
+});

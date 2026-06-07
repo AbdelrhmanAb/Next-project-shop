@@ -1,10 +1,10 @@
 import { getPostById } from "@/data/posts";
 import CommentsSection from "@/components/posts/CommentsSection";
 
-const Post = async ({ params }: { params: any }) => {
+const Post = async ({ params }: { params: {id:string} }) => {
   const { id } = await params;
-  const post = await getPostById(id);
-
+  const data = await getPostById(id);
+  const post  = data.post
   return (
     <main className="min-h-screen m-4 rounded-3xl bg-black text-white flex justify-center px-4 py-16">
       <article className="w-full max-w-3xl">
